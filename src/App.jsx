@@ -1,7 +1,7 @@
 import "./App.css";
 import { useState } from "react";
-import TodoList from "./TodoList";
-import TodoForm from "./TodoForm";
+import TodoList from "./TodoList.jsx";
+import TodoForm from "./TodoForm.jsx";
 
 const todos = [
   { id: 1, title: "review resources" },
