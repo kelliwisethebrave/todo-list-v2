@@ -1,26 +1,65 @@
 import { useState } from "react";
 import TextInputWithLabel from "../../shared/TextInputWithLabel.jsx";
+import { isValidTodoTitle } from "../../utils/todoValidation.js";
 
-function TodoListItem({ todo, onCompleteTodo }) {
+function TodoListItem({ todo, onCompleteTodo, onUpdateTodo }) {
   const [isEditing, setIsEditing] = useState(false);
+  const [workingTitle, setWorkingTitle] = useState(todo.title);
+
+  function handleCancel() {
+    setWorkingTitle(todo.title);
+    setIsEditing(false);
+  }
+  function handleEdit(event) {
+    setWorkingTitle(event.target.value);
+  }
+  function handleUpdate(event) {
+    if (!isEditing) {
+      return;
+    }
+
+    event.preventDefault();
+    onUpdateTodo({ ...todo, title: workingTitle });
+    setIsEditing(false);
+  }
+
   return (
     <li>
-      {isEditing ? (
-        <TextInputWithLabel value={todo.title} />
-      ) : (
-        <>
-          <input
-            type="checkbox"
-            id={`checkbox${todo.id}`}
-            checked={todo.isCompleted}
-            onChange={() => onCompleteTodo(todo.id)}
-          />
-          {/* set the `type` prop to "checkbox" */}
-          {/* add the `checked` props */}
-          {/* add `onChange` event listener that uses the `onCompleteTodo` helper` */}
-          <span onClick={() => setIsEditing(true)}>{todo.title}</span>
-        </>
-      )}
+      <form onSubmit={handleUpdate}>
+        {isEditing ? (
+          <>
+            <TextInputWithLabel
+              elementId={`editTodo-${todo.id}`}
+              labelText="Edit Todo"
+              value={workingTitle}
+              onChange={handleEdit}
+            />
+            <button type="button" onClick={handleCancel}>
+              Cancel
+            </button>
+            <button
+              type="button"
+              onClick={handleUpdate}
+              disabled={!isValidTodoTitle(workingTitle)}
+            >
+              Update
+            </button>
+          </>
+        ) : (
+          <>
+            <input
+              type="checkbox"
+              id={`checkbox${todo.id}`}
+              checked={todo.isCompleted}
+              onChange={() => onCompleteTodo(todo.id)}
+            />
+            {/* set the `type` prop to "checkbox" */}
+            {/* add the `checked` props */}
+            {/* add `onChange` event listener that uses the `onCompleteTodo` helper` */}
+            <span onClick={() => setIsEditing(true)}>{todo.title}</span>
+          </>
+        )}
+      </form>
     </li>
   );
 }
