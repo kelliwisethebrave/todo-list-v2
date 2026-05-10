@@ -1,11 +1,20 @@
 import { useState } from "react";
 import TextInputWithLabel from "../../shared/TextInputWithLabel.jsx";
 import { isValidTodoTitle } from "../../utils/todoValidation.js";
+import { useEditableTitle } from "../../hooks/useEditableTitle.js";
 
 function TodoListItem({ todo, onCompleteTodo, onUpdateTodo }) {
-  const [isEditing, setIsEditing] = useState(false);
-  const [workingTitle, setWorkingTitle] = useState(todo.title);
+  const {
+    isEditing,
+    workingTitle,
+    startEditing,
+    cancelEdit,
+    updateTitle,
+    finishEdit,
+  } = useEditableTitle(todo.title);
 
+  {
+    /*} BELOW ARE PRE-CUSTOM HOOK FUNCTIONS USED
   function handleCancel() {
     setWorkingTitle(todo.title);
     setIsEditing(false);
@@ -21,25 +30,38 @@ function TodoListItem({ todo, onCompleteTodo, onUpdateTodo }) {
     event.preventDefault();
     onUpdateTodo({ ...todo, title: workingTitle });
     setIsEditing(false);
+  }*/
   }
 
   return (
     <li>
-      <form onSubmit={handleUpdate}>
+      <form
+        onSubmit={(event) => {
+          if (!isEditing) return;
+          event.preventDefault();
+          const finalTitle = finishEdit();
+          onUpdateTodo({ ...todo, title: finalTitle });
+        }}
+      >
         {isEditing ? (
           <>
             <TextInputWithLabel
               elementId={`editTodo-${todo.id}`}
               labelText="Edit Todo"
               value={workingTitle}
-              onChange={handleEdit}
+              onChange={(event) => updateTitle(event.target.value)}
             />
-            <button type="button" onClick={handleCancel}>
+            <button type="button" onClick={cancelEdit}>
               Cancel
             </button>
             <button
               type="button"
-              onClick={handleUpdate}
+              onClick={(event) => {
+                if (!isEditing) return;
+                event.preventDefault();
+                const finalTitle = finishEdit();
+                onUpdateTodo({ ...todo, title: finalTitle });
+              }}
               disabled={!isValidTodoTitle(workingTitle)}
             >
               Update
@@ -56,7 +78,7 @@ function TodoListItem({ todo, onCompleteTodo, onUpdateTodo }) {
             {/* set the `type` prop to "checkbox" */}
             {/* add the `checked` props */}
             {/* add `onChange` event listener that uses the `onCompleteTodo` helper` */}
-            <span onClick={() => setIsEditing(true)}>{todo.title}</span>
+            <span onClick={() => startEditing()}>{todo.title}</span>
           </>
         )}
       </form>
