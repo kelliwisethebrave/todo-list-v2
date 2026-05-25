@@ -125,7 +125,7 @@ function TodosPage({ token }) {
         },
         body: JSON.stringify({
           isCompleted: true,
-          createdTime: origTodo.createdTime, //createdAt on server, but doesn't work
+          //createdTime: origTodo.createdTime, //createdAt on server, but doesn't work
         }),
         credentials: "include",
       };
@@ -170,7 +170,7 @@ function TodosPage({ token }) {
         body: JSON.stringify({
           title: editedTodo.title,
           isCompleted: editedTodo.isCompleted,
-          createdTime: editedTodo.createdTime, //createdAt on server, but doesn't work
+          //createdTime: editedTodo.createdTime, //createdAt on server, but doesn't work
         }),
         credentials: "include",
       };
@@ -186,7 +186,7 @@ function TodosPage({ token }) {
 
       //rollback
       setTodoList((previous) =>
-        previous.map((todo) => (todo.id === editedTodo ? origTodo : todo)),
+        previous.map((todo) => (todo.id === editedTodo.id ? origTodo : todo)),
       );
     }
   }
