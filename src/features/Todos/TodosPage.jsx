@@ -30,7 +30,6 @@ function TodosPage({ token }) {
           );
         }
         const data = await response.json();
-        console.log(data);
         setTodoList(data.tasks);
       } catch (error) {
         console.error(error);
@@ -74,7 +73,6 @@ function TodosPage({ token }) {
         throw new Error(response.message || "Failed to add todo");
       }
       const dataNewTodo = await response.json();
-      console.log(dataNewTodo);
 
       //setTodoList(data.tasks);
       setTodoList((previous) =>
@@ -92,7 +90,6 @@ function TodosPage({ token }) {
   async function completeTodo(id) {
     //save for rollback
     const origTodo = todoList.find((todo) => todo.id === id);
-    console.log(origTodo);
     //takes id
     //maps through todoList
     const updatedTodos = todoList.map((todo) => {
@@ -137,8 +134,7 @@ function TodosPage({ token }) {
       if (!response.ok) {
         throw new Error("Failed to complete todo");
       }
-      const dataCompletedTodo = await response.json();
-      console.log(dataCompletedTodo);
+      //const dataCompletedTodo = await response.json(); not needed, logged to visualize
     } catch (error) {
       console.error(error);
       setError(`Error: ${error.name} | ${error.message}`);
@@ -183,8 +179,7 @@ function TodosPage({ token }) {
       if (!response.ok) {
         throw new Error("Failed to update todo");
       }
-      const dataUpdatedTodo = await response.json();
-      console.log(dataUpdatedTodo);
+      //const dataUpdatedTodo = await response.json(); not needed, logged to visualize
     } catch (error) {
       console.error(error);
       setError(`Error: ${error.name} | ${error.message}`);
