@@ -11,21 +11,22 @@ function TodosPage({ token }) {
   useEffect(() => {
     async function fetchTodos() {
       setIsTodoListLoading(true);
-      const options = {
-        method: "GET",
-        headers: {
-          "X-CSRF-TOKEN": token,
-        },
-        credentials: "include",
-      };
+
       try {
+        const options = {
+          method: "GET",
+          headers: {
+            "X-CSRF-TOKEN": token,
+          },
+          credentials: "include",
+        };
         const response = await fetch("api/tasks", options);
         if (response.status === 401) {
           throw new Error("Not authorized.");
         }
         if (!response.ok) {
           throw new Error(
-            response.messge || "Failed to fetch todos from server",
+            response.message || "Failed to fetch todos from server",
           );
         }
         const data = await response.json();
@@ -43,15 +44,49 @@ function TodosPage({ token }) {
     }
   }, [token]);
 
-  function addTodo(todoTitle) {
+  async function addTodo(todoTitle) {
+    const tempId = Date.now();
     const newTodo = {
       //can be just title since they have the same name
       title: todoTitle,
-      id: Date.now(),
+      id: tempId,
       isCompleted: false,
     };
 
     setTodoList((previous) => [newTodo, ...previous]);
+    //add to server
+    try {
+      const options = {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "X-CSRF-TOKEN": token,
+        },
+        body: JSON.stringify({
+          title: newTodo.title,
+          isCompleted: newTodo.isCompleted,
+        }),
+        credentials: "include",
+      };
+      const response = await fetch("api/tasks", options);
+
+      if (!response.ok) {
+        throw new Error(response.message || "Failed to add todo");
+      }
+      const dataNewTodo = await response.json();
+      console.log(dataNewTodo);
+
+      //setTodoList(data.tasks);
+      setTodoList((previous) =>
+        previous.map((todo) => (todo.id === tempId ? dataNewTodo : todo)),
+      );
+    } catch (error) {
+      console.error(error);
+      setError(`Error: ${error.name} | ${error.message}`);
+
+      //remove todo that didn't save to the server
+      setTodoList((previous) => previous.filter((todo) => todo.id !== tempId));
+    }
   }
 
   function completeTodo(id) {
