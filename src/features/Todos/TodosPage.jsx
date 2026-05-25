@@ -20,7 +20,7 @@ function TodosPage({ token }) {
           },
           credentials: "include",
         };
-        const response = await fetch("api/tasks", options);
+        const response = await fetch("/api/tasks", options);
         if (response.status === 401) {
           throw new Error("Not authorized.");
         }
@@ -68,7 +68,7 @@ function TodosPage({ token }) {
         }),
         credentials: "include",
       };
-      const response = await fetch("api/tasks", options);
+      const response = await fetch("/api/tasks", options);
 
       if (!response.ok) {
         throw new Error(response.message || "Failed to add todo");
@@ -89,7 +89,10 @@ function TodosPage({ token }) {
     }
   }
 
-  function completeTodo(id) {
+  async function completeTodo(id) {
+    //save for rollback
+    const origTodo = todoList.find((todo) => todo.id === id);
+    console.log(origTodo);
     //takes id
     //maps through todoList
     const updatedTodos = todoList.map((todo) => {
@@ -106,9 +109,51 @@ function TodosPage({ token }) {
     //saves the resulting array to a const updatedTodos
     //update the todoList with updatedTodos
     setTodoList(updatedTodos);
+
+    //the two previous steps can be combined:
+    //setTodoList((previous) =>
+    //previous.map((todo) => {
+    //if (todo.id === id) {
+    //return { ...todo, isCompleted: true };
+    //} else {
+    // return todo;
+
+    //sending to the server
+    try {
+      const options = {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          "X-CSRF-TOKEN": token,
+        },
+        body: JSON.stringify({
+          isCompleted: true,
+          createdTime: origTodo.createdTime, //createdAt on server, but doesn't work
+        }),
+        credentials: "include",
+      };
+      const response = await fetch(`/api/tasks/${id}`, options);
+
+      if (!response.ok) {
+        throw new Error("Failed to complete todo");
+      }
+      const dataCompletedTodo = await response.json();
+      console.log(dataCompletedTodo);
+    } catch (error) {
+      console.error(error);
+      setError(`Error: ${error.name} | ${error.message}`);
+
+      //rollback
+      setTodoList((previous) =>
+        previous.map((todo) => (todo.id === id ? origTodo : todo)),
+      );
+    }
   }
 
-  function updateTodo(editedTodo) {
+  async function updateTodo(editedTodo) {
+    //save for rollback
+    const origTodo = todoList.find((todo) => todo.id === editedTodo.id);
+
     const updatedTodos = todoList.map((todo) => {
       if (todo.id === editedTodo.id) {
         return { ...editedTodo };
@@ -117,6 +162,38 @@ function TodosPage({ token }) {
       }
     });
     setTodoList(updatedTodos);
+
+    //sending to the server
+    try {
+      const options = {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          "X-CSRF-TOKEN": token,
+        },
+        body: JSON.stringify({
+          title: editedTodo.title,
+          isCompleted: editedTodo.isCompleted,
+          createdTime: editedTodo.createdTime, //createdAt on server, but doesn't work
+        }),
+        credentials: "include",
+      };
+      const response = await fetch(`/api/tasks/${editedTodo.id}`, options);
+
+      if (!response.ok) {
+        throw new Error("Failed to update todo");
+      }
+      const dataUpdatedTodo = await response.json();
+      console.log(dataUpdatedTodo);
+    } catch (error) {
+      console.error(error);
+      setError(`Error: ${error.name} | ${error.message}`);
+
+      //rollback
+      setTodoList((previous) =>
+        previous.map((todo) => (todo.id === editedTodo ? origTodo : todo)),
+      );
+    }
   }
 
   return (
