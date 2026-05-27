@@ -2,21 +2,33 @@ import { useState, useEffect } from "react";
 import TodoForm from "./TodoForm.jsx";
 import TodoList from "./TodoList/TodoList.jsx";
 import SortBy from "../../shared/SortBy.jsx";
+import useDebounce from "../../utils/useDebounce.js";
+import FilterInput from "../../shared/FilterInput.jsx";
 
 function TodosPage({ token }) {
   const [todoList, setTodoList] = useState([]);
   const [error, setError] = useState("");
   const [sortBy, setSortBy] = useState("creationDate");
   const [sortDirection, setSortDirection] = useState("desc");
+  const [filterTerm, setFilterTerm] = useState("");
   const [isTodoListLoading, setIsTodoListLoading] = useState(false);
+
+  const debouncedFilterTerm = useDebounce(filterTerm, 300);
 
   useEffect(() => {
     async function fetchTodos() {
       setIsTodoListLoading(true);
-      const params = new URLSearchParams({
+
+      const paramsObject = {
         sortBy,
         sortDirection,
-      });
+      };
+
+      if (debouncedFilterTerm) {
+        paramsObject.find = debouncedFilterTerm;
+      }
+
+      const params = new URLSearchParams(paramsObject);
 
       try {
         const options = {
@@ -47,7 +59,7 @@ function TodosPage({ token }) {
     if (token) {
       fetchTodos();
     }
-  }, [token, sortBy, sortDirection]);
+  }, [token, sortBy, sortDirection, debouncedFilterTerm]);
 
   async function addTodo(todoTitle) {
     const tempId = Date.now();
@@ -197,6 +209,10 @@ function TodosPage({ token }) {
     }
   }
 
+  const handleFilterChange = (newFilterTerm) => {
+    setFilterTerm(newFilterTerm);
+  };
+
   return (
     <>
       {" "}
@@ -217,6 +233,7 @@ function TodosPage({ token }) {
         onSortByChange={setSortBy}
         onSortDirectionChange={setSortDirection}
       />
+      <FilterInput filterTerm={filterTerm} onFilterChange={setFilterTerm} />
       <TodoForm onAddTodo={addTodo} />
       <TodoList
         todoList={todoList}
