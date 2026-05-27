@@ -210,6 +210,7 @@ function TodosPage({ token }) {
       if (!response.ok) {
         throw new Error("Failed to update todo");
       }
+      invalidateCache();
       //const dataUpdatedTodo = await response.json(); not needed, logged to visualize
     } catch (error) {
       console.error(error);
