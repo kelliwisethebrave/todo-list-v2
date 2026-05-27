@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import TodoForm from "./TodoForm.jsx";
 import TodoList from "./TodoList/TodoList.jsx";
 import SortBy from "../../shared/SortBy.jsx";
@@ -11,6 +11,7 @@ function TodosPage({ token }) {
   const [sortBy, setSortBy] = useState("creationDate");
   const [sortDirection, setSortDirection] = useState("desc");
   const [filterTerm, setFilterTerm] = useState("");
+  const [dataVersion, setDataVersion] = useState(0);
   const [isTodoListLoading, setIsTodoListLoading] = useState(false);
 
   const debouncedFilterTerm = useDebounce(filterTerm, 300);
@@ -96,6 +97,7 @@ function TodosPage({ token }) {
       setTodoList((previous) =>
         previous.map((todo) => (todo.id === tempId ? dataNewTodo : todo)),
       );
+      invalidateCache();
     } catch (error) {
       console.error(error);
       setError(`Error: ${error.name} | ${error.message}`);
@@ -152,6 +154,7 @@ function TodosPage({ token }) {
       if (!response.ok) {
         throw new Error("Failed to complete todo");
       }
+      invalidateCache();
       //const dataCompletedTodo = await response.json(); not needed, logged to visualize
     } catch (error) {
       console.error(error);
@@ -213,6 +216,11 @@ function TodosPage({ token }) {
     setFilterTerm(newFilterTerm);
   };
 
+  const invalidateCache = useCallback(() => {
+    setDataVersion((prev) => prev + 1);
+    console.log("Invalidating memo cache after todo mutation");
+  }, []);
+
   return (
     <>
       {" "}
@@ -233,12 +241,16 @@ function TodosPage({ token }) {
         onSortByChange={setSortBy}
         onSortDirectionChange={setSortDirection}
       />
-      <FilterInput filterTerm={filterTerm} onFilterChange={setFilterTerm} />
+      <FilterInput
+        filterTerm={filterTerm}
+        onFilterChange={handleFilterChange}
+      />
       <TodoForm onAddTodo={addTodo} />
       <TodoList
         todoList={todoList}
         onCompleteTodo={completeTodo}
         onUpdateTodo={updateTodo}
+        dataVersion={dataVersion}
       />
     </>
   );
