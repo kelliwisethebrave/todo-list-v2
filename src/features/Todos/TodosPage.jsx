@@ -12,6 +12,7 @@ function TodosPage({ token }) {
   const [sortDirection, setSortDirection] = useState("desc");
   const [filterTerm, setFilterTerm] = useState("");
   const [dataVersion, setDataVersion] = useState(0);
+  const [filterError, setFilterError] = useState("");
   const [isTodoListLoading, setIsTodoListLoading] = useState(false);
 
   const debouncedFilterTerm = useDebounce(filterTerm, 300);
@@ -50,9 +51,18 @@ function TodosPage({ token }) {
         }
         const data = await response.json();
         setTodoList(data.tasks);
+        setFilterError("");
       } catch (error) {
         console.error(error);
-        setError(`Error: ${error.name} | ${error.message}`);
+        if (
+          debouncedFilterTerm ||
+          sortBy !== "creationDate" ||
+          sortDirection != "desc"
+        ) {
+          setFilterError(`Error filtering/sorting todos: ${error.message}`);
+        } else {
+          setError(`Error fetching todos: ${error.message}`);
+        }
       } finally {
         setIsTodoListLoading(false);
       }
@@ -218,7 +228,7 @@ function TodosPage({ token }) {
 
   const invalidateCache = useCallback(() => {
     setDataVersion((prev) => prev + 1);
-    console.log("Invalidating memo cache after todo mutation");
+    //console.log("Invalidating memo cache after todo mutation");
   }, []);
 
   return (
@@ -228,6 +238,22 @@ function TodosPage({ token }) {
         <div>
           <p>{error}</p>
           <button onClick={() => setError("")}>Clear Error</button>
+        </div>
+      )}
+      {filterError && (
+        <div>
+          <p>{filterError}</p>
+          <button onClick={() => setFilterError("")}>Clear Filter Error</button>
+          <button
+            onClick={() => {
+              setFilterTerm("");
+              setSortBy("creationDate");
+              setSortDirection("desc");
+              setFilterError("");
+            }}
+          >
+            Reset Filters
+          </button>
         </div>
       )}
       {isTodoListLoading && (
