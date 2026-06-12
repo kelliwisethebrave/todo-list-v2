@@ -4,13 +4,15 @@ import TodoList from "./TodoList/TodoList.jsx";
 import SortBy from "../../shared/SortBy.jsx";
 import useDebounce from "../../utils/useDebounce.js";
 import FilterInput from "../../shared/FilterInput.jsx";
+import { useAuth } from "../../contexts/AuthContext.jsx";
 import {
   todoReducer,
   initialTodoState,
   TODO_ACTIONS,
 } from "../../reducers/todoReducer.js";
 
-function TodosPage({ token }) {
+function TodosPage() {
+  const { token } = useAuth();
   // const [todoList, setTodoList] = useState([]);
   // const [error, setError] = useState("");
   // const [sortBy, setSortBy] = useState("creationDate");
