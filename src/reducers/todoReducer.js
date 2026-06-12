@@ -143,9 +143,7 @@ export function todoReducer(state, action) {
       return {
         ...state,
         todoList: state.todoList.map((todo) =>
-          todo.id === action.payload.editedTodo.id
-            ? action.payload.origTodo
-            : todo,
+          todo.id === action.payload.id ? action.payload.origTodo : todo,
         ),
       };
 
