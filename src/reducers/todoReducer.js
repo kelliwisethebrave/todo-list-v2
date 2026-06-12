@@ -145,6 +145,7 @@ export function todoReducer(state, action) {
         todoList: state.todoList.map((todo) =>
           todo.id === action.payload.id ? action.payload.origTodo : todo,
         ),
+        error: action.payload.message,
       };
 
     //ui actions
