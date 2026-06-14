@@ -5,6 +5,9 @@ import TodosPage from "./pages/TodosPage.jsx";
 import Header from "./shared/Header.jsx";
 import LoginPage from "./pages/LoginPage.jsx";
 import AboutPage from "./pages/AboutPage.jsx";
+import RequireAuth from "./components/RequireAuth.jsx";
+import NotFound from "./pages/NotFound.jsx";
+import ProfilePage from "./pages/ProfilePage.jsx";
 //import { useState } from "react";
 //import { useAuth } from "./contexts/AuthContext.jsx";
 
@@ -22,8 +25,22 @@ function App() {
         <Route path="/about" element={<AboutPage />} />
         <Route path="/login" element={<LoginPage />} />
 
-        {token && <Route path="/todos" element={<TodosPage />} />}
-        {token && <Route path="/profile" element={<TodosPage />} />}
+        <Route
+          path="/todos"
+          element={
+            <RequireAuth>
+              <TodosPage />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="/profile"
+          element={
+            <RequireAuth>
+              <ProfilePage />
+            </RequireAuth>
+          }
+        />
 
         <Route path="*" element={<NotFound />} />
       </Routes>
