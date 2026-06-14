@@ -11,7 +11,7 @@ function TodoList({
   //const filteredTodoList = todoList.filter((todo) => !todo.isCompleted);
 
   const filteredTodoList = useMemo(() => {
-    //console.log(
+    //cnl.log(
     //  `Recalculating filtered todos (v${dataVersion}) status: ${statusFilter}`,
     //);
 

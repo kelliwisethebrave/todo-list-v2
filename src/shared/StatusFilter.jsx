@@ -23,7 +23,7 @@ function StatusFilter() {
       >
         <option value="all">All Todos</option>
         <option value="active">Active Todos</option>
-        <option value="completed">Completed</option>
+        <option value="completed">Completed Todos</option>
       </select>
     </div>
   );

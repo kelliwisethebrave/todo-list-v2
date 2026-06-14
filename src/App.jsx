@@ -6,7 +6,7 @@ import Header from "./shared/Header.jsx";
 import LoginPage from "./pages/LoginPage.jsx";
 import AboutPage from "./pages/AboutPage.jsx";
 import RequireAuth from "./components/RequireAuth.jsx";
-import NotFound from "./pages/NotFound.jsx";
+import NotFoundPage from "./pages/NotFoundPage.jsx";
 import ProfilePage from "./pages/ProfilePage.jsx";
 //import { useState } from "react";
 //import { useAuth } from "./contexts/AuthContext.jsx";
@@ -42,7 +42,7 @@ function App() {
           }
         />
 
-        <Route path="*" element={<NotFound />} />
+        <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </div>
   );

@@ -73,7 +73,7 @@ function ProfilePage() {
           </p>
         </div>
       )}
-      {error && { error }}
+      {error && <p>{error}</p>}
     </>
   );
 }

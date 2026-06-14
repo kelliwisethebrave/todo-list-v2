@@ -80,7 +80,6 @@ function TodosPage() {
           payload: { todos: data.tasks },
         });
       } catch (error) {
-        console.error(error);
         if (
           debouncedFilterTerm ||
           sortBy !== "creationDate" ||
@@ -160,7 +159,6 @@ function TodosPage() {
 
       invalidateCache();
     } catch (error) {
-      console.error(error);
       //setError(`Error: ${error.name} | ${error.message}`);
 
       //remove todo that didn't save to the server
@@ -233,7 +231,6 @@ function TodosPage() {
       invalidateCache();
       //const dataCompletedTodo = await response.json(); not needed, logged to visualize
     } catch (error) {
-      console.error(error);
       //setError(`Error: ${error.name} | ${error.message}`);
       //rollback
       //setTodoList((previous) =>
@@ -289,7 +286,6 @@ function TodosPage() {
       invalidateCache();
       //const dataUpdatedTodo = await response.json(); not needed, logged to visualize
     } catch (error) {
-      console.error(error);
       //setError(`Error: ${error.name} | ${error.message}`);
       dispatch({
         type: TODO_ACTIONS.UPDATE_TODO_ERROR,
@@ -313,7 +309,7 @@ function TodosPage() {
   const invalidateCache = useCallback(() => {
     //setDataVersion((prev) => prev + 1);
     dispatch({ type: TODO_ACTIONS.INVALIDATE_CACHE });
-    //console.log("Invalidating memo cache after todo mutation");
+    //cnl("Invalidating memo cache after todo mutation");
   }, []);
 
   return (
