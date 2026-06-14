@@ -38,7 +38,6 @@ function ProfilePage() {
         }
 
         const todos = await response.json();
-        console.log(todos);
         const total = todos.tasks.length;
         const completed = todos.tasks.filter((todo) => todo.isCompleted).length;
         const active = total - completed;
@@ -48,7 +47,6 @@ function ProfilePage() {
         setError(`Error loading todo statistics: ${error.message}`);
       } finally {
         setIsLoading(false);
-        console.log(todoStats);
       }
     }
 
@@ -75,7 +73,7 @@ function ProfilePage() {
           </p>
         </div>
       )}
-      {error && <p>Error: {error.message}</p>}
+      {error && { error }}
     </>
   );
 }
