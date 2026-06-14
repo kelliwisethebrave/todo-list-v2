@@ -13,9 +13,10 @@ function Logoff() {
     setError("");
 
     const result = await logout();
-    navigate("/login");
+
     if (result.success) {
       // Logout successful, context will update automatically
+      navigate("/login");
     } else {
       setError(result.error);
       setIsLoggingOff(false);

@@ -2,11 +2,11 @@ import { useEffect, useState } from "react";
 import { useAuth } from "../contexts/AuthContext.jsx";
 
 function ProfilePage() {
-  const { name, token } = useAuth();
+  const { email, token } = useAuth();
   const [todoStats, setTodoStats] = useState({
-    totalTodos: 0,
-    completedTodos: 0,
-    activeTodos: 0,
+    total: 0,
+    completed: 0,
+    active: 0,
   });
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState("");
@@ -22,7 +22,7 @@ function ProfilePage() {
         const options = {
           method: "GET",
           headers: {
-            "X-CRSF-TOKEN": token,
+            "X-CSRF-TOKEN": token,
           },
           credentials: "include",
         };
@@ -57,7 +57,7 @@ function ProfilePage() {
 
   return (
     <>
-      <h2>{name} - user profile</h2>
+      <h2>{email} - user profile</h2>
       <p>Status: Active</p>
       <h3>Todo Statistics</h3>
       {isLoading ? (
