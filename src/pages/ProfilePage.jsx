@@ -27,7 +27,7 @@ function ProfilePage() {
           credentials: "include",
         };
 
-        const response = await fetch("api/tasks", options);
+        const response = await fetch("/api/tasks", options);
 
         if (response.status === 401) {
           throw new Error("Not authorized.");
@@ -38,9 +38,11 @@ function ProfilePage() {
         }
 
         const todos = await response.json();
-
-        const todosTotal = todos.length;
-        const completedTodos = todos.filter((todo) => todo.isCompleted).length;
+        console.log(todos);
+        const todosTotal = todos.tasks.length;
+        const completedTodos = todos.tasks.filter(
+          (todo) => todo.isCompleted,
+        ).length;
         const activeTodos = todosTotal - completedTodos;
 
         setTodoStats({ todosTotal, completedTodos, activeTodos });
@@ -48,6 +50,7 @@ function ProfilePage() {
         setError(`Error loading todo statistics: ${error.message}`);
       } finally {
         setIsLoading(false);
+        console.log(todoStats);
       }
     }
 
