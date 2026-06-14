@@ -58,6 +58,7 @@ function ProfilePage() {
   return (
     <>
       <h2>{name} - user profile</h2>
+      <p>Status: Active</p>
       <h3>Todo Statistics</h3>
       {isLoading ? (
         <p>Loading statistics...</p>
