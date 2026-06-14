@@ -39,13 +39,11 @@ function ProfilePage() {
 
         const todos = await response.json();
         console.log(todos);
-        const todosTotal = todos.tasks.length;
-        const completedTodos = todos.tasks.filter(
-          (todo) => todo.isCompleted,
-        ).length;
-        const activeTodos = todosTotal - completedTodos;
+        const total = todos.tasks.length;
+        const completed = todos.tasks.filter((todo) => todo.isCompleted).length;
+        const active = total - completed;
 
-        setTodoStats({ todosTotal, completedTodos, activeTodos });
+        setTodoStats({ total, completed, active });
       } catch (error) {
         setError(`Error loading todo statistics: ${error.message}`);
       } finally {
@@ -66,13 +64,13 @@ function ProfilePage() {
       ) : (
         <div>
           <p>
-            <b>Total todos:</b> {todoStats.todosTotal}
+            <b>Total todos:</b> {todoStats.total}
           </p>
           <p>
-            <b>Completed todos:</b> {todoStats.completedTodos}
+            <b>Completed todos:</b> {todoStats.completed}
           </p>
           <p>
-            <b>Uncompleted/Active todos:</b> {todoStats.activeTodos}
+            <b>Uncompleted/Active todos:</b> {todoStats.active}
           </p>
         </div>
       )}

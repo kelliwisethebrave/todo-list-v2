@@ -10,9 +10,12 @@ import {
   initialTodoState,
   TODO_ACTIONS,
 } from "../reducers/todoReducer.js";
+import { useSearchParams } from "react-router";
+import StatusFilter from "../shared/StatusFilter.jsx";
 
 function TodosPage() {
   const { token } = useAuth();
+  const [searchParams] = useSearchParams();
   // const [todoList, setTodoList] = useState([]);
   // const [error, setError] = useState("");
   // const [sortBy, setSortBy] = useState("creationDate");
@@ -34,6 +37,7 @@ function TodosPage() {
   } = state;
 
   const debouncedFilterTerm = useDebounce(filterTerm, 300);
+  const statusFilter = searchParams.get("status") || "all";
 
   useEffect(() => {
     async function fetchTodos() {
@@ -363,6 +367,7 @@ function TodosPage() {
           })
         }
       />
+      <StatusFilter />
       <FilterInput
         filterTerm={filterTerm}
         onFilterChange={handleFilterChange}
@@ -373,6 +378,7 @@ function TodosPage() {
         onCompleteTodo={completeTodo}
         onUpdateTodo={updateTodo}
         dataVersion={dataVersion}
+        statusFilter={statusFilter}
       />
     </>
   );
