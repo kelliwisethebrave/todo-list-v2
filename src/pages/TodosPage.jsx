@@ -1,18 +1,21 @@
 import { useEffect, useCallback, useReducer } from "react";
-import TodoForm from "./TodoForm.jsx";
-import TodoList from "./TodoList/TodoList.jsx";
-import SortBy from "../../shared/SortBy.jsx";
-import useDebounce from "../../utils/useDebounce.js";
-import FilterInput from "../../shared/FilterInput.jsx";
-import { useAuth } from "../../contexts/AuthContext.jsx";
+import TodoForm from "../features/Todos/TodoForm.jsx";
+import TodoList from "../features/Todos/TodoList/TodoList.jsx";
+import SortBy from "../shared/SortBy.jsx";
+import useDebounce from "../utils/useDebounce.js";
+import FilterInput from "../shared/FilterInput.jsx";
+import { useAuth } from "../contexts/AuthContext.jsx";
 import {
   todoReducer,
   initialTodoState,
   TODO_ACTIONS,
-} from "../../reducers/todoReducer.js";
+} from "../reducers/todoReducer.js";
+import { useSearchParams } from "react-router";
+import StatusFilter from "../shared/StatusFilter.jsx";
 
 function TodosPage() {
   const { token } = useAuth();
+  const [searchParams] = useSearchParams();
   // const [todoList, setTodoList] = useState([]);
   // const [error, setError] = useState("");
   // const [sortBy, setSortBy] = useState("creationDate");
@@ -34,6 +37,7 @@ function TodosPage() {
   } = state;
 
   const debouncedFilterTerm = useDebounce(filterTerm, 300);
+  const statusFilter = searchParams.get("status") || "all";
 
   useEffect(() => {
     async function fetchTodos() {
@@ -76,7 +80,6 @@ function TodosPage() {
           payload: { todos: data.tasks },
         });
       } catch (error) {
-        console.error(error);
         if (
           debouncedFilterTerm ||
           sortBy !== "creationDate" ||
@@ -156,7 +159,6 @@ function TodosPage() {
 
       invalidateCache();
     } catch (error) {
-      console.error(error);
       //setError(`Error: ${error.name} | ${error.message}`);
 
       //remove todo that didn't save to the server
@@ -229,7 +231,6 @@ function TodosPage() {
       invalidateCache();
       //const dataCompletedTodo = await response.json(); not needed, logged to visualize
     } catch (error) {
-      console.error(error);
       //setError(`Error: ${error.name} | ${error.message}`);
       //rollback
       //setTodoList((previous) =>
@@ -285,7 +286,6 @@ function TodosPage() {
       invalidateCache();
       //const dataUpdatedTodo = await response.json(); not needed, logged to visualize
     } catch (error) {
-      console.error(error);
       //setError(`Error: ${error.name} | ${error.message}`);
       dispatch({
         type: TODO_ACTIONS.UPDATE_TODO_ERROR,
@@ -309,7 +309,7 @@ function TodosPage() {
   const invalidateCache = useCallback(() => {
     //setDataVersion((prev) => prev + 1);
     dispatch({ type: TODO_ACTIONS.INVALIDATE_CACHE });
-    //console.log("Invalidating memo cache after todo mutation");
+    //cnl("Invalidating memo cache after todo mutation");
   }, []);
 
   return (
@@ -363,6 +363,7 @@ function TodosPage() {
           })
         }
       />
+      <StatusFilter />
       <FilterInput
         filterTerm={filterTerm}
         onFilterChange={handleFilterChange}
@@ -373,6 +374,7 @@ function TodosPage() {
         onCompleteTodo={completeTodo}
         onUpdateTodo={updateTodo}
         dataVersion={dataVersion}
+        statusFilter={statusFilter}
       />
     </>
   );
