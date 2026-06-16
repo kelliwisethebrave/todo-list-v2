@@ -1,3 +1,5 @@
+import styles from "./SortBy.module.css";
+
 function SortBy({
   sortBy,
   sortDirection,
@@ -5,7 +7,7 @@ function SortBy({
   onSortDirectionChange,
 }) {
   return (
-    <>
+    <div className={styles.sortControls}>
       <label htmlFor="sortBy">Sort By</label>
       <select
         id="sortBy"
@@ -15,6 +17,7 @@ function SortBy({
         <option value="creationDate">Creation Date</option>
         <option value="title">Title</option>
       </select>
+
       <label htmlFor="sortDirection">Sort Direction</label>
       <select
         id="sortDirection"
@@ -24,7 +27,7 @@ function SortBy({
         <option value="desc">Descending</option>
         <option value="asc">Ascending</option>
       </select>
-    </>
+    </div>
   );
 }
 

@@ -1,0 +1,47 @@
+.primaryButton {
+  background-color: var(--primary-color);
+  color: white;
+
+  width: 100%;
+  border: none;
+  border-radius: 6px;
+
+  padding: 0.75rem 1rem;
+  cursor: pointer;
+  font-family: "Nunito", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: normal;
+  font-style: normal;
+  font-size: 1rem;
+  flex-shrink: 0;
+  margin-top: 0.25rem;
+  min-height: 48px;
+}
+
+.primaryButton:hover {
+  filter: brightness(95%);
+}
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+@media (min-width: 600px) {
+  .form {
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .primaryButton {
+    width: auto;
+    flex-shrink: 0;
+    margin-top: 0rem;
+    min-height: 48px;
+  }
+}

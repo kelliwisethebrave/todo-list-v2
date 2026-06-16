@@ -55,11 +55,16 @@ function ProfilePage() {
 
   return (
     <>
-      <h2>{email} - user profile</h2>
-      <p>Status: Active</p>
+      <h2>{email} - User Profile</h2>
+      <p>
+        <b>Status:</b> Active
+      </p>
       <h3>Todo Statistics</h3>
       {isLoading ? (
-        <p>Loading statistics...</p>
+        <div className="loadingContainer">
+          <div className="spinner"></div>
+          <p className="loading">Loading statistics...</p>
+        </div>
       ) : (
         <div>
           <p>
@@ -73,7 +78,7 @@ function ProfilePage() {
           </p>
         </div>
       )}
-      {error && <p>{error}</p>}
+      {error && <p className="error">{error}</p>}
     </>
   );
 }

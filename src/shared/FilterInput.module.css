@@ -1,0 +1,9 @@
+.smallInput {
+  width: 100%;
+}
+
+@media (min-width: 600px) {
+  .smallInput {
+    width: 40rem;
+  }
+}

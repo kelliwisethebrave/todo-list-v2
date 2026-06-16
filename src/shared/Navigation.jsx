@@ -1,40 +1,59 @@
 import { NavLink } from "react-router";
 import { useAuth } from "../contexts/AuthContext";
+import styles from "./Navigation.module.css";
 
 function Navigation() {
   const { isAuthenticated } = useAuth();
 
-  const navLinkStyles = ({ isActive }) => ({
-    fontWeight: isActive ? "bold" : "normal",
-    textDecoration: isActive ? "underline" : "none",
-  });
+  //const navLinkStyles = ({ isActive }) => ({
+  //  fontWeight: isActive ? "bold" : "normal",
+  //  textDecoration: isActive ? "underline" : "none",
+  //});
 
   return (
-    <nav>
-      <ul
-        style={{ listStyle: "none", display: "flex", gap: "1rem", padding: 0 }}
-      >
+    <nav className={styles.nav}>
+      <ul className={styles.list}>
         <li>
-          <NavLink to="/about" style={navLinkStyles}>
+          <NavLink
+            to="/about"
+            className={({ isActive }) =>
+              isActive ? styles.activeLink : styles.link
+            }
+          >
             About
           </NavLink>
         </li>
         {isAuthenticated ? (
           <>
             <li>
-              <NavLink to="/todos" style={navLinkStyles}>
+              <NavLink
+                to="/todos"
+                className={({ isActive }) =>
+                  isActive ? styles.activeLink : styles.link
+                }
+              >
                 Todos
               </NavLink>
             </li>
             <li>
-              <NavLink to="/profile" style={navLinkStyles}>
+              <NavLink
+                to="/profile"
+                className={({ isActive }) =>
+                  isActive ? styles.activeLink : styles.link
+                }
+              >
                 Profile
               </NavLink>
             </li>
           </>
         ) : (
           <li>
-            <NavLink to="/login" style={navLinkStyles}>
+            <NavLink
+              to="/login"
+              className={({ isActive }) =>
+                isActive ? styles.activeLink : styles.link
+              }
+            >
               Login
             </NavLink>
           </li>

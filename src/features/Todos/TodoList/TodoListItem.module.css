@@ -1,0 +1,118 @@
+.checkbox {
+  width: 1.25rem;
+  height: 1.25rem;
+  cursor: pointer;
+
+  accent-color: var(--success-color);
+}
+.checkbox:hover {
+  transform: scale(1.5);
+}
+
+.checkbox:focus-visible {
+  outline: 2px solid #555577;
+  outline-offset: 2px;
+}
+
+.todoItem {
+  /*background: white;*/
+  border-radius: 8px;
+  padding: 0.75rem;
+  margin: 0.25rem;
+  transition: all 0.2s;
+}
+.todoTitle {
+  flex: 1;
+  cursor: pointer;
+}
+
+.completed {
+  background-color: #edf7f0;
+  border-left: 6px solid var(--success-color);
+}
+
+.completedText {
+  text-decoration: line-through;
+  color: #555577;
+  opacity: 0.75;
+}
+
+.updateButton {
+  background-color: var(--success-color);
+  color: white;
+
+  border: none;
+  border-radius: 6px;
+  min-height: 44px;
+
+  padding: 0.75rem 1rem;
+  cursor: pointer;
+  font-family: "Nunito", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: normal;
+  font-style: normal;
+  font-size: 1rem;
+}
+
+.updateButton:hover {
+  filter: brightness(95%);
+}
+
+.cancelButton {
+  background-color: var(--danger-color);
+  color: white;
+
+  border: none;
+  border-radius: 6px;
+  min-height: 44px;
+
+  padding: 0.75rem 1rem;
+  cursor: pointer;
+  font-family: "Nunito", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: normal;
+  font-style: normal;
+  font-size: 1rem;
+}
+
+.cancelButton:hover {
+  filter: brightness(95%);
+}
+
+.form {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.viewForm {
+  flex-direction: row;
+  align-items: center;
+}
+
+.editForm {
+  flex-direction: column;
+}
+
+.buttonGroup {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.buttonGroup button {
+  flex: 1;
+}
+
+@media (min-width: 768px) {
+  .editForm {
+    flex-direction: row;
+    align-items: end;
+  }
+
+  .buttonGroup {
+    flex: 0 0 auto;
+  }
+
+  .buttonGroup button {
+    flex: none;
+  }
+}

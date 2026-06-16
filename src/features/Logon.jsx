@@ -51,7 +51,7 @@ function Logon() {
           {isLoggingOn ? <>Logging in...</> : <>Log on</>}
         </button>
       </form>
-      {authError && <p>{authError}</p>}
+      {authError && <p className="error">{authError}</p>}
     </>
   );
 }

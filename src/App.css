@@ -1,0 +1,56 @@
+.app {
+  min-height: 100vh;
+  background-color: #9999cc;
+}
+
+.main-content {
+  width: 100%;
+  max-width: 1000px;
+  margin: 1rem auto;
+  padding: 1.5rem;
+  background-color: white;
+  border-radius: 12px;
+  color: var(--text-color);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* tablet formatting */
+@media (min-width: 768px) {
+  .app {
+    padding: 1.5rem;
+  }
+
+  .main-content {
+    padding: 1.5rem;
+  }
+}
+
+/* laptop */
+@media (min-width: 1024px) {
+  .main-content {
+    padding: 2rem;
+  }
+}
+
+/* desktop */
+@media (min-width: 1440px) {
+  .app {
+    padding: 3rem;
+  }
+}
+
+.input {
+  width: 100%;
+
+  padding: 0.75rem;
+
+  border: 2px solid #ddd;
+  border-radius: 6px;
+}
+.input:focus {
+  outline: none;
+
+  border-color: var(--primary-color);
+
+  box-shadow: 0 0 0 3px rgba(153, 153, 204, 0.3);
+}

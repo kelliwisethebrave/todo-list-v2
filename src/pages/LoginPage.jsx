@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router";
 import { useAuth } from "../contexts/AuthContext";
+import styles from "./LoginPage.module.css";
 
 function LoginPage() {
   const { login, isAuthenticated } = useAuth();
@@ -42,32 +43,39 @@ function LoginPage() {
   }
 
   return (
-    <>
-      <form onSubmit={handleSubmit}>
-        <label htmlFor="email">Email</label>
-        <input
-          type="text"
-          id="email"
-          name="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-        />
-        <label htmlFor="password">Password</label>
-        <input
-          type="password"
-          id="password"
-          name="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-        />
-        <button disabled={isLoggingOn}>
-          {isLoggingOn ? <>Logging in...</> : <>Log on</>}
-        </button>
-      </form>
-      {authError && <p>{authError}</p>}
-    </>
+    <div className={styles.loginPage}>
+      <div className={styles.loginCard}>
+        <h2 className={styles.title}>Log in</h2>
+        <form className={styles.form} onSubmit={handleSubmit}>
+          <div className={styles.field}>
+            <label htmlFor="email">Email&nbsp;</label>
+            <input
+              type="text"
+              className={styles.input}
+              id="email"
+              name="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />{" "}
+            <label htmlFor="password">Password&nbsp;</label>
+            <input
+              type="password"
+              className={styles.input}
+              id="password"
+              name="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+          </div>
+          <button disabled={isLoggingOn} className={styles.loginButton}>
+            {isLoggingOn ? <>Logging in...</> : <>Log on</>}
+          </button>
+        </form>
+        {authError && <p className="error">{authError}</p>}
+      </div>
+    </div>
   );
 }
 

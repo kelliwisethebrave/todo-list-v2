@@ -1,0 +1,30 @@
+.input {
+  width: 100%;
+}
+
+.inputContainer {
+  flex: 1;
+}
+
+.field {
+  flex: 1;
+  display: flex;
+  align-items: column;
+  gap: 0.5rem;
+}
+
+.input {
+  width: 100%;
+  min-height: 48px;
+}
+
+@media (min-width: 600px) {
+  .field {
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .input {
+    flex: 1;
+  }
+}

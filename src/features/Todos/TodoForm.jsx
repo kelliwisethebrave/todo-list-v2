@@ -1,6 +1,7 @@
 import { useRef, useState } from "react";
 import TextInputWithLabel from "../../shared/TextInputWithLabel.jsx";
 import { isValidTodoTitle } from "../../utils/todoValidation.js";
+import styles from "./TodoForm.module.css";
 
 function TodoForm({ onAddTodo }) {
   const [workingTodoTitle, setWorkingTodoTitle] = useState("");
@@ -19,7 +20,7 @@ function TodoForm({ onAddTodo }) {
   };
 
   return (
-    <form onSubmit={handleAddTodo}>
+    <form onSubmit={handleAddTodo} className={styles.form}>
       <TextInputWithLabel
         ref={inputRef}
         value={workingTodoTitle}
@@ -28,7 +29,11 @@ function TodoForm({ onAddTodo }) {
         labelText="Todo"
       />
 
-      <button type="submit" disabled={!isValidTodoTitle(workingTodoTitle)}>
+      <button
+        className={styles.primaryButton}
+        type="submit"
+        disabled={!isValidTodoTitle(workingTodoTitle)}
+      >
         Add Todo
       </button>
     </form>

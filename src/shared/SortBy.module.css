@@ -1,0 +1,13 @@
+.sortControls {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+@media (min-width: 768px) {
+  .sortControls {
+    flex-direction: row;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+}
