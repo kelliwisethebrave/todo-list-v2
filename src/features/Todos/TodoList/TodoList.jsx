@@ -9,13 +9,7 @@ function TodoList({
   dataVersion,
   statusFilter = "active",
 }) {
-  //const filteredTodoList = todoList.filter((todo) => !todo.isCompleted);
-
   const filteredTodoList = useMemo(() => {
-    //cnl.log(
-    //  `Recalculating filtered todos (v${dataVersion}) status: ${statusFilter}`,
-    //);
-
     let filteredTodos;
     switch (statusFilter) {
       case "completed":
@@ -62,13 +56,6 @@ function TodoList({
               onUpdateTodo={onUpdateTodo}
             />
           ))}
-
-          {/* before destructuring 
-          <ul>
-      {todoList.map((todo) => (
-        <li key={todo.id}>{todo.title}</li>
-        </ul>
-        */}
         </ul>
       )}
     </>

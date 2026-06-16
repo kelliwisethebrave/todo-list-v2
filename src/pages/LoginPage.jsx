@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router";
 import { useAuth } from "../contexts/AuthContext";
+import { sanitizeInput } from "../utils/sanitizeInput";
 import styles from "./LoginPage.module.css";
 
 function LoginPage() {
@@ -27,8 +28,16 @@ function LoginPage() {
     event.preventDefault();
     setIsLoggingOn(true);
 
+    if (!email.trim() || !password.trim()) {
+      setAuthError("Please enter both your email and password.");
+      return;
+    }
+
+    const sanitizedEmail = sanitizeInput(email);
+    const sanitizedPassword = sanitizeInput(password);
+
     try {
-      const response = await login(email, password);
+      const response = await login(sanitizedEmail, sanitizedPassword);
 
       if (response.success) {
         //login successful
@@ -54,6 +63,7 @@ function LoginPage() {
               className={styles.input}
               id="email"
               name="email"
+              maxLength={300}
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
@@ -62,6 +72,7 @@ function LoginPage() {
             <input
               type="password"
               className={styles.input}
+              maxLength={300}
               id="password"
               name="password"
               value={password}

@@ -1,6 +1,7 @@
 import { useRef, useState } from "react";
 import TextInputWithLabel from "../../shared/TextInputWithLabel.jsx";
 import { isValidTodoTitle } from "../../utils/todoValidation.js";
+import { sanitizeInput } from "../../utils/sanitizeInput.js";
 import styles from "./TodoForm.module.css";
 
 function TodoForm({ onAddTodo }) {
@@ -10,11 +11,13 @@ function TodoForm({ onAddTodo }) {
   const handleAddTodo = (event) => {
     event.preventDefault();
 
-    // .trim prevents whitespace only todos
-    //const todoTitle = event.target.todoTitle.value.trim();
-    //if (todoTitle && todoTitle !== "") {
-    onAddTodo(workingTodoTitle.trim());
-    //event.target.reset();
+    if (!isValidTodoTitle(workingTodoTitle)) {
+      return;
+    }
+
+    const sanitizedTitle = sanitizeInput(workingTodoTitle);
+
+    onAddTodo(sanitizedTitle);
     setWorkingTodoTitle("");
     inputRef.current.focus();
   };

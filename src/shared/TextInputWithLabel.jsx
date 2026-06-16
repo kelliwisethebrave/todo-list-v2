@@ -6,6 +6,7 @@ function TextInputWithLabel({ elementId, labelText, onChange, ref, value }) {
       <label htmlFor={elementId}>{labelText}</label>
       <input
         type="text"
+        maxLength={1000}
         className={styles.input}
         id={elementId}
         ref={ref}

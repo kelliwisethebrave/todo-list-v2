@@ -1,6 +1,7 @@
 import TextInputWithLabel from "../../../shared/TextInputWithLabel.jsx";
 import { isValidTodoTitle } from "../../../utils/todoValidation.js";
 import { useEditableTitle } from "../../../hooks/useEditableTitle.js";
+import { sanitizeInput } from "../../../utils/sanitizeInput.js";
 import styles from "./TodoListItem.module.css";
 
 function TodoListItem({ todo, onCompleteTodo, onUpdateTodo }) {
@@ -12,26 +13,6 @@ function TodoListItem({ todo, onCompleteTodo, onUpdateTodo }) {
     updateTitle,
     finishEdit,
   } = useEditableTitle(todo.title);
-
-  {
-    /*} BELOW ARE PRE-CUSTOM HOOK FUNCTIONS USED
-  function handleCancel() {
-    setWorkingTitle(todo.title);
-    setIsEditing(false);
-  }
-  function handleEdit(event) {
-    setWorkingTitle(event.target.value);
-  }
-  function handleUpdate(event) {
-    if (!isEditing) {
-      return;
-    }
-
-    event.preventDefault();
-    onUpdateTodo({ ...todo, title: workingTitle });
-    setIsEditing(false);
-  }*/
-  }
 
   return (
     <li
@@ -46,7 +27,7 @@ function TodoListItem({ todo, onCompleteTodo, onUpdateTodo }) {
         onSubmit={(event) => {
           if (!isEditing) return;
           event.preventDefault();
-          const finalTitle = finishEdit();
+          const finalTitle = sanitizeInput(finishEdit());
           onUpdateTodo({ ...todo, title: finalTitle });
         }}
       >
@@ -90,9 +71,7 @@ function TodoListItem({ todo, onCompleteTodo, onUpdateTodo }) {
               checked={todo.isCompleted}
               onChange={() => onCompleteTodo(todo.id)}
             />
-            {/* set the `type` prop to "checkbox" */}
-            {/* add the `checked` props */}
-            {/* add `onChange` event listener that uses the `onCompleteTodo` helper` */}
+
             <span
               onClick={() => startEditing()}
               className={
