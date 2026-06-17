@@ -29,11 +29,11 @@ npm run preview - acquire the build server local URL
 
 ## Features List
 
-• Login to account
-• Add todo to list
-• Access previously added todos
-• Complete todo
-• Edit todo
+• Login to account  
+• Add todo to list  
+• Access previously added todos  
+• Complete todo  
+• Edit todo  
 • View account information and statistics
 
 ## Technologies Used
@@ -52,7 +52,7 @@ I used to be a web designer, but even so I struggle to let my perfectionism go w
 
 ## Future Improvements
 
-x. Delete todos
+x. Delete todos  
 x. Add sub-todos (tasks)
 
 ## License Information
