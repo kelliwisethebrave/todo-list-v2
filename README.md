@@ -48,7 +48,7 @@ I used to be a web designer, but even so I struggle to let my perfectionism go w
 
 ![Desktop screenshot](images/screenshot_desktop.png)
 ![Mobile screenshot 1](images/screenshot_mobile_1.png)
-![Mobile screenshot 2](images/sscreenshot_mobile_2.png)
+![Mobile screenshot 2](images/screenshot_mobile_2.png)
 
 ## Future Improvements
 
