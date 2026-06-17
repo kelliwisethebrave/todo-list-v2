@@ -95,7 +95,7 @@ function TodosPage() {
     if (token) {
       fetchTodos();
     }
-  }, [token, sortBy, sortDirection, debouncedFilterTerm]);
+  }, [token, sortBy, sortDirection, debouncedFilterTerm, dataVersion]);
 
   async function addTodo(todoTitle) {
     const tempId = Date.now();
@@ -159,10 +159,14 @@ function TodosPage() {
     //saves the resulting array to a const updatedTodos
     //update the todoList with updatedTodos
 
-    //setTodoList(updatedTodos);
+    if (!origTodo) {
+      return;
+    }
+    const newCompletedStatus = !origTodo.isCompleted;
+
     dispatch({
       type: TODO_ACTIONS.COMPLETE_TODO_START,
-      payload: { id },
+      payload: { id, isCompleted: newCompletedStatus },
     });
 
     //sending to the server
@@ -174,7 +178,7 @@ function TodosPage() {
           "X-CSRF-TOKEN": token,
         },
         body: JSON.stringify({
-          isCompleted: true,
+          isCompleted: newCompletedStatus,
           createdAt: origTodo.createdTime,
         }),
         credentials: "include",
@@ -182,7 +186,7 @@ function TodosPage() {
       const response = await fetch(`/api/tasks/${id}`, options);
 
       if (!response.ok) {
-        throw new Error("Failed to complete todo");
+        throw new Error("Failed to update todo status");
       }
       dispatch({ type: TODO_ACTIONS.COMPLETE_TODO_SUCCESS });
 
@@ -234,6 +238,35 @@ function TodosPage() {
         payload: {
           message: `Error: ${error.name} | ${error.message}`,
           id: editedTodo.id,
+          origTodo,
+        },
+      });
+    }
+  }
+
+  async function deleteTodo(id) {
+    const origTodo = todoList.find((todo) => todo.id === id);
+
+    dispatch({ type: TODO_ACTIONS.DELETE_TODO_START, payload: { id } });
+    try {
+      const response = await fetch(`/api/tasks/${id}`, {
+        method: "DELETE",
+        headers: {
+          "X-CSRF-TOKEN": token,
+        },
+        credentials: "include",
+      });
+
+      if (!response.ok) {
+        throw new Error("Unable to delete todo.");
+      }
+
+      dispatch({ type: TODO_ACTIONS.DELETE_TODO_SUCCESS, payload: id });
+    } catch (error) {
+      dispatch({
+        type: TODO_ACTIONS.DELETE_TODO_ERROR,
+        payload: {
+          message: `Error (${error}): Unable to delete todo. Please try again.`,
           origTodo,
         },
       });
@@ -315,6 +348,7 @@ function TodosPage() {
         todoList={todoList}
         onCompleteTodo={completeTodo}
         onUpdateTodo={updateTodo}
+        onDeleteTodo={deleteTodo}
         dataVersion={dataVersion}
         statusFilter={statusFilter}
       />

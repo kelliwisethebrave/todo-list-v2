@@ -34,6 +34,7 @@ npm run preview - acquire the build server local URL
 • Access previously added todos  
 • Complete todo  
 • Edit todo  
+• Sort and filter todos
 • View account information and statistics
 
 ## Technologies Used

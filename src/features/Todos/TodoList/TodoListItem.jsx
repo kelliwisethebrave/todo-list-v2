@@ -4,7 +4,7 @@ import { useEditableTitle } from "../../../hooks/useEditableTitle.js";
 import { sanitizeInput } from "../../../utils/sanitizeInput.js";
 import styles from "./TodoListItem.module.css";
 
-function TodoListItem({ todo, onCompleteTodo, onUpdateTodo }) {
+function TodoListItem({ todo, onCompleteTodo, onUpdateTodo, onDeleteTodo }) {
   const {
     isEditing,
     workingTitle,
@@ -25,10 +25,24 @@ function TodoListItem({ todo, onCompleteTodo, onUpdateTodo }) {
       <form
         className={`${styles.form} ${isEditing ? styles.editForm : styles.viewForm}`}
         onSubmit={(event) => {
-          if (!isEditing) return;
           event.preventDefault();
-          const finalTitle = sanitizeInput(finishEdit());
-          onUpdateTodo({ ...todo, title: finalTitle });
+
+          if (!isEditing || !isValidTodoTitle(workingTitle)) {
+            return;
+          }
+
+          const sanitizedTitle = sanitizeInput(workingTitle);
+
+          // sanitizing could make title invalid
+          if (!isValidTodoTitle(sanitizedTitle)) {
+            return;
+          }
+
+          finishEdit();
+          onUpdateTodo({
+            ...todo,
+            title: sanitizedTitle,
+          });
         }}
       >
         {isEditing ? (
@@ -47,18 +61,15 @@ function TodoListItem({ todo, onCompleteTodo, onUpdateTodo }) {
               >
                 Cancel
               </button>
+              <button type="submit" className={styles.updateButton}>
+                Update
+              </button>
               <button
                 type="button"
-                className={styles.updateButton}
-                onClick={(event) => {
-                  if (!isEditing) return;
-                  event.preventDefault();
-                  const finalTitle = finishEdit();
-                  onUpdateTodo({ ...todo, title: finalTitle });
-                }}
-                disabled={!isValidTodoTitle(workingTitle)}
+                className={styles.deleteButton}
+                onClick={() => onDeleteTodo(todo.id)}
               >
-                Update
+                Delete
               </button>
             </div>
           </>
