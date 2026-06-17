@@ -34,7 +34,8 @@ npm run preview - acquire the build server local URL
 • Access previously added todos  
 • Complete todo  
 • Edit todo  
-• Sort and filter todos
+• Sort and filter todos  
+• Delete todos  
 • View account information and statistics
 
 ## Technologies Used
@@ -53,7 +54,6 @@ I used to be a web designer, but even so I struggle to let my perfectionism go w
 
 ## Future Improvements
 
-x. Delete todos  
 x. Add sub-todos (tasks)
 
 ## License Information

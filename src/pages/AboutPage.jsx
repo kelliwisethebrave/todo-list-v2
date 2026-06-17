@@ -4,7 +4,7 @@ function AboutPage() {
       <h2>📋 About this Todo List App</h2>
       <p>
         <b>✨ Features:</b> Login to account, add todos to list, edit todos,
-        complete todos
+        complete/uncomplete todos, filter todos, sort todos, delete todos
       </p>
       <p>
         <b>✨ Technologies Used:</b> React, React Router, Vite
