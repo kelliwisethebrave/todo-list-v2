@@ -16,7 +16,7 @@
   min-height: 44px;
 }
 
-.clearerrorButton:hover {
+.clearErrorButton:hover {
   filter: brightness(95%);
 }
 

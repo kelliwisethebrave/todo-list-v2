@@ -65,7 +65,6 @@ function TodosPage() {
           );
         }
         const data = await response.json();
-        console.log(data);
 
         dispatch({
           type: TODO_ACTIONS.FETCH_SUCCESS,
